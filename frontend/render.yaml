@@ -3,6 +3,7 @@ services:
     name: sustainable-platform-frontend
     env: node
     plan: free
+    rootDir: frontend
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
