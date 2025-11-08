@@ -1,0 +1,41 @@
+services:
+  # Backend API Service
+  - type: web
+    name: sustainable-platform-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+    healthCheckPath: /
+
+  # Frontend Service
+  - type: web
+    name: sustainable-platform-frontend
+    env: node
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: sustainable-platform-backend
+          property: host
+
+databases:
+  - name: sustainable-platform-db
+    plan: free
+    databaseName: sustainable-living
+    user: sustainable-user
+
